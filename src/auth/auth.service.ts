@@ -117,4 +117,19 @@ export class AuthService {
       token,
     };
   }
+
+  async saveProfilePic(
+    userId: string,
+    filePath: string,
+  ): Promise<HUserDocument> {
+    const publicUrl = `http://127.0.0.1:3000/${filePath.replace(/\\/g, '/')}`;
+    const updatedUser = await this._userModel.findByIdAndUpdate(
+      userId,
+      { profilePic: publicUrl },
+      { returnDocument: 'after' },
+    );
+    if(!updatedUser) throw new NotFoundException("User Not Found")
+
+    return updatedUser;
+  }
 }

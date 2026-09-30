@@ -6,6 +6,8 @@ import {
   Get,
   UseGuards,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { CreateAuthDto } from './dto/create-auth.dto.js';
@@ -14,6 +16,8 @@ import { VerifyEmailDto } from './dto/verify-email.dto.js';
 import { ResendOtpDto } from './dto/resend-otp.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { AuthGuard } from '../common/guards/auth.guard.js';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '../common/utils/multer.util.js';
 
 @Controller('auth')
 export class AuthController {
@@ -51,5 +55,19 @@ export class AuthController {
       message: 'user retrieved successfully',
       result: req.user,
     };
+  }
+
+  @Patch('profile-pic')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  async uploadProfilePic(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
+    const userId = req.user._id;
+    const filePath = file.path;
+
+    const updatedUser = await this.authService.saveProfilePic(userId, filePath);
+    return {
+      message:'profile image uploaded successfully',
+      user:updatedUser,
+    }
   }
 }
