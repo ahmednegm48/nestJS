@@ -62,7 +62,10 @@ export class AuthService {
     )
       throw new BadRequestException('Invalid OTP');
 
-    if (new Date() > user.otpExpiresAt!)
+    const expiresAt = user.otpExpiresAt
+      ? new Date(user.otpExpiresAt).getTime()
+      : NaN;
+    if (Number.isNaN(expiresAt) || Date.now() > expiresAt)
       throw new BadRequestException('Expired OTP');
 
     user.confirmEmail = new Date();

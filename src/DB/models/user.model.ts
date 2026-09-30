@@ -48,7 +48,7 @@ export class User {
   confirmEmailOTP: string | undefined;
 
   @Prop({
-    type: String,
+    type: Date,
     default: undefined,
   })
   otpExpiresAt: Date | undefined;
