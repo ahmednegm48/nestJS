@@ -12,7 +12,11 @@ export class CategoryService {
     private readonly _categoryModel: Model<HCategoryDocument>,
   ) {}
 
-  create(createCategoryDto: CreateCategoryDto, logoUrl: string, adminId: Types.ObjectId) {
+  create(
+    createCategoryDto: CreateCategoryDto,
+    logoUrl: string,
+    adminId: Types.ObjectId,
+  ) {
     const newCategory = new this._categoryModel({
       ...createCategoryDto,
       logo: logoUrl,
@@ -20,7 +24,6 @@ export class CategoryService {
     });
     return newCategory.save();
   }
-
 
   findAll() {
     return this._categoryModel.find();
@@ -30,10 +33,16 @@ export class CategoryService {
     return this._categoryModel.findById(id);
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto , logoUrl?: string) {
-    const updatedData: any = {...updateCategoryDto};
-    if(logoUrl) updatedData.logo =  logoUrl;
-    const updatedCategory = await this._categoryModel.findByIdAndUpdate(id, updatedData, { returnDocument: 'after' }).populate('createdBy','firstName lastName email');
+  async update(
+    id: string,
+    updateCategoryDto: UpdateCategoryDto,
+    logoUrl?: string,
+  ) {
+    const updatedData: any = { ...updateCategoryDto };
+    if (logoUrl) updatedData.logo = logoUrl;
+    const updatedCategory = await this._categoryModel
+      .findByIdAndUpdate(id, updatedData, { returnDocument: 'after' })
+      .populate('createdBy', 'firstName lastName email');
     return updatedCategory;
   }
 }
