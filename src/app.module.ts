@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { MailModule } from './mail/mail.module.js';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware.js';
 import { AuthController } from './auth/auth.controller.js';
+import { CategoryModule } from './category/category.module.js';
 
 
 @Module({
@@ -26,7 +27,8 @@ import { AuthController } from './auth/auth.controller.js';
     inject:[ConfigService]
   }),
   AuthModule,
-  MailModule
+  MailModule,
+  CategoryModule
 ],
   controllers: [AppController],
   providers: [AppService],
