@@ -25,13 +25,13 @@ export class CategoryService {
     return newCategory.save();
   }
 
-  async findAll() {
+  async findAll(): Promise<HCategoryDocument[]> {
     const categories = await this._categoryModel.find();
     if(!categories) throw new NotFoundException('No categories found');
     return categories;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<HCategoryDocument> {
     const category = await this._categoryModel.findById(id);    
     if(!category) throw new NotFoundException('Category not found');
     return category; 

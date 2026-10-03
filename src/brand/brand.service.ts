@@ -38,7 +38,7 @@ export class BrandService {
     return (await newBrand.save()).populate('categories', 'name logo');
   }
 
-  async findAll() {
+  async findAll(): Promise<HBrandDocument[]> {
     const brands = await this._brandModel
       .find()
       .populate('categories', 'name logo');
@@ -46,7 +46,7 @@ export class BrandService {
     return brands;
   }
 
-  async findOne(id: Types.ObjectId) {
+  async findOne(id: Types.ObjectId): Promise<HBrandDocument> {
     const brand = await this._brandModel
       .findById(id)
       .populate('categories', 'name logo');
