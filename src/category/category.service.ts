@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
 import { UpdateCategoryDto } from './dto/update-category.dto.js';
 import { InjectModel } from '@nestjs/mongoose';
@@ -25,12 +25,16 @@ export class CategoryService {
     return newCategory.save();
   }
 
-  findAll() {
-    return this._categoryModel.find();
+  async findAll() {
+    const categories = await this._categoryModel.find();
+    if(!categories) throw new NotFoundException('No categories found');
+    return categories;
   }
 
-  findOne(id: string) {
-    return this._categoryModel.findById(id);
+  async findOne(id: string) {
+    const category = await this._categoryModel.findById(id);    
+    if(!category) throw new NotFoundException('Category not found');
+    return category; 
   }
 
   async update(

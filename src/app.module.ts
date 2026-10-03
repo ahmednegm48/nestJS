@@ -9,6 +9,8 @@ import { MailModule } from './mail/mail.module.js';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware.js';
 import { AuthController } from './auth/auth.controller.js';
 import { CategoryModule } from './category/category.module.js';
+import { BrandModule } from './brand/brand.module.js';
+import { ProductModule } from './product/product.module.js';
 
 
 @Module({
@@ -28,7 +30,9 @@ import { CategoryModule } from './category/category.module.js';
   }),
   AuthModule,
   MailModule,
-  CategoryModule
+  CategoryModule,
+  BrandModule,
+  ProductModule
 ],
   controllers: [AppController],
   providers: [AppService],
