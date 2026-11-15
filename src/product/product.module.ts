@@ -6,9 +6,10 @@ import { BrandModel } from '../DB/models/brand.model.js';
 import { ProductModel } from '../DB/models/product.model.js';
 import { TokenService } from '../common/services/token.service.js';
 import { JwtService } from '@nestjs/jwt';
+import { CachingModule } from '../caching/caching.module.js';
 
 @Module({
-  imports: [UserModel, BrandModel, ProductModel],
+  imports: [UserModel, BrandModel, ProductModel, CachingModule],
   controllers: [ProductController],
   providers: [ProductService, TokenService, JwtService],
 })

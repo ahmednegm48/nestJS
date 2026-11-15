@@ -10,6 +10,7 @@ import { HUserDocument, User } from '../../DB/models/user.model.js';
 import { Model } from 'mongoose';
 import { Request } from 'express';
 import { RoleEnum } from '../enums/user.enum.js';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,7 +21,12 @@ export class AuthGuard implements CanActivate {
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request>();
+    let request = context.switchToHttp().getRequest<Request>();
+
+    if (!request) {
+      const gqlContext = GqlExecutionContext.create(context);
+      request = gqlContext.getContext().req;
+    }
 
     const authHeader = request.headers.authorization;
 

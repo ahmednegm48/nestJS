@@ -22,6 +22,7 @@ import { Types } from 'mongoose';
 import { Roles } from '../common/decorators/roles.decorator.js';
 import { RoleEnum } from '../common/enums/user.enum.js';
 import { RolesGuard } from '../common/guards/roles.guard.js';
+import { CacheInterceptor } from '../caching/interceptors/http-cache.interceptor.js';
 
 @Controller('product')
 export class ProductController {
@@ -45,11 +46,13 @@ export class ProductController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.productService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: Types.ObjectId) {
     return this.productService.findOne(id);
   }

@@ -6,6 +6,8 @@ import { tap } from 'rxjs/operators';
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger('performance');
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    if (context.getType() !== 'http') return next.handle();
+
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
     const method = request.method;
